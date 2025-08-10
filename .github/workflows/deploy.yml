@@ -44,7 +44,7 @@ jobs:
           static_site_generator: next
       
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .next/cache
@@ -60,8 +60,11 @@ jobs:
       - name: Build with Next.js
         run: npm run build
       
+      - name: Add .nojekyll file
+        run: touch ./out/.nojekyll
+      
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./out
 
