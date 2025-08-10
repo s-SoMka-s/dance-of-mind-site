@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build && next export",
+    "deploy": "npm run build && touch out/.nojekyll"
   },
   "dependencies": {
     "react": "19.1.0",
@@ -23,5 +25,8 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
     "@eslint/eslintrc": "^3"
+  },
+  "engines": {
+    "node": ">=18.18.0"
   }
 }
