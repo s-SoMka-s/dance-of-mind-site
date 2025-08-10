@@ -60,8 +60,10 @@ jobs:
       - name: Build with Next.js
         run: npm run build
       
-      - name: Add .nojekyll file
-        run: touch ./out/.nojekyll
+      - name: Add .nojekyll to disable Jekyll on Pages
+        run: |
+          mkdir -p out
+          touch out/.nojekyll
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
