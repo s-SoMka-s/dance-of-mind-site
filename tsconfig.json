@@ -21,9 +21,17 @@
     ],
     "paths": {
       "@hooks/*": ["src/app/hooks/*"],
+      "@store/*": ["src/store/*"],
       "@/*": ["src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/store/AppStoreProvider.jsx",
+    "src/store/AppStore.jsx"
+  ],
   "exclude": ["node_modules"]
 }

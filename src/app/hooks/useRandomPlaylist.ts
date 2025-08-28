@@ -1,11 +1,15 @@
 'use client';
 
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState } from 'react';
 import { usePageVisibilityPause } from './usePageVisibilityPause';
 import { useInterval } from '@/app/hooks/useInterval';
 import { useAudioPlayer } from 'react-use-audio-player';
 
-export function useRandomPlaylist(playlist: string[], intervalMs: number) {
+export function useRandomPlaylist(
+  playlist: string[],
+  intervalMs: number,
+  onPick: (index: number) => void
+) {
   const { load, pause } = useAudioPlayer();
 
   console.log('useRandomPlaylist initialized with playlist:', playlist);
@@ -15,19 +19,24 @@ export function useRandomPlaylist(playlist: string[], intervalMs: number) {
 
   const [isRunning, setIsRunning] = useState(false);
 
-  useInterval(
-    () => {
-      if (playlist.length === 0) return;
-      const index = Math.floor(Math.random() * playlist.length);
-      console.log(`Playing track: ${playlist[index]}`);
+  const onEveryInterval = () => {
+    console.log('Interval tick');
 
-      load(playlist[index], {
-        initialVolume: 0.75,
-        autoplay: true,
-      });
-    },
-    isRunning ? intervalMs : null
-  );
+    if (playlist.length === 0) {
+      return;
+    }
+
+    const index = Math.floor(Math.random() * playlist.length);
+    console.log(`Playing track: ${playlist[index]}`);
+    onPick(index);
+
+    load(playlist[index], {
+      initialVolume: 0.75,
+      autoplay: true,
+    });
+  };
+
+  useInterval(onEveryInterval, intervalMs);
 
   const handleUserStart = () => {
     console.log('User started the playlist');

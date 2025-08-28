@@ -204,10 +204,12 @@ export const SparklesCore = (props: ParticlesProps) => {
                 },
                 random: false,
                 size: false,
-                speed: {
-                  min: 0.1,
-                  max: 1,
-                },
+                // Map external `speed` to actual movement speed multiplier.
+                // Default (speed=4) -> max=1, success (e.g. speed=12) -> max≈3
+                speed: (() => {
+                  const factor = Math.max(0.1, Math.min(3, (speed ?? 4) / 4));
+                  return { min: Math.max(0.05, factor / 10), max: factor };
+                })(),
                 spin: {
                   acceleration: 0,
                   enable: false,
