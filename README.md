@@ -7,6 +7,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - Node.js version 18.18.0 or higher
 
 If you're using nvm, you can install the required Node.js version:
+
 ```bash
 nvm install
 nvm use
@@ -34,17 +35,19 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## GitHub Pages Deployment
 
-This project is configured for automatic deployment to GitHub Pages. 
+This project is configured for automatic deployment to GitHub Pages.
 
 ### Setup Instructions
 
 1. **Enable GitHub Pages in your repository settings:**
+
    - Go to your repository on GitHub
    - Click on **Settings** tab
    - Scroll down to **Pages** section
    - Under **Source**, select **GitHub Actions**
 
 2. **Push your changes to the master branch:**
+
    ```bash
    git add .
    git commit -m "Configure for GitHub Pages deployment"
