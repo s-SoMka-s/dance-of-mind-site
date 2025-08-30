@@ -28,19 +28,6 @@ const AnswerInputImpl = ({ store, onStart }: Props) => {
           onFocus={() => onStart?.()}
           aria-label="Ответ"
         />
-        <div className="mt-2 flex items-center justify-between text-xs text-white/60">
-          {store.isSolved ? (
-            <span className="text-emerald-400">Верно! Комедия побеждает.</span>
-          ) : (
-            <button
-              type="button"
-              className="text-white/80 hover:text-white"
-              onClick={() => store.checkAnswer(val)}
-            >
-              Проверить
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );

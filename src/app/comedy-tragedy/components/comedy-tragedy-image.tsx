@@ -13,11 +13,13 @@ type Props = {
     wrongActive: boolean;
     wrongToken: number;
   };
+  isError: boolean;
 };
 
-const ComedyTragedyImageImpl = ({ store }: Props) => {
+const ComedyTragedyImageImpl = ({ store, isError }: Props) => {
   const src = store.isSolved || !store.wrongActive ? '/images/comedy.png' : '/images/tragedy.png';
   const alt = store.isSolved || !store.wrongActive ? 'Комедия' : 'Трагедия';
+  const isTragedy = !store.isSolved && store.wrongActive;
 
   const router = useRouter();
 
@@ -47,7 +49,7 @@ const ComedyTragedyImageImpl = ({ store }: Props) => {
         animate={store.wrongActive ? { x: [0, -10, 10, -8, 8, -5, 5, 0] } : { x: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Image src={src} alt={alt} width={320} height={570} priority />
+        <Image src={src} alt={alt} width={320} height={570} color="red" priority />
       </motion.div>
     </motion.div>
   );

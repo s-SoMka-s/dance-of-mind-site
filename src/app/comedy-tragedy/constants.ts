@@ -1,6 +1,17 @@
 export type TrackItem = { src: string; word: string };
 
-export const ONE_MINUTE = 60 * 1000;
+export const ONE_MINUTE = 10 * 1000;
+
+export const IMAGES = {
+  comedy: {
+    src: '/images/comedy.png',
+    alt: 'Комедия',
+  },
+  tragedy: {
+    src: '/images/tragedy.png',
+    alt: 'Трагедия',
+  },
+};
 
 export const TRACKS: TrackItem[] = [
   { src: '/audio/1.mp3', word: 'тест' },
