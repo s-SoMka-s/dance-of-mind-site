@@ -1,5 +1,5 @@
 import { PARTICLES } from '@/app/comedy-tragedy/constants';
-import { LayoutGrid } from '@/components/ui/layout-grid';
+//import { LayoutGrid } from '@/components/ui/layout-grid';
 import { SparklesCore } from '@/components/ui/sparkles';
 
 export default function CardGridPage() {
@@ -19,7 +19,7 @@ export default function CardGridPage() {
       </div>
 
       <div className="relative z-10 flex flex-col items-center w-full max-w-5xl px-4">
-        <LayoutGrid></LayoutGrid>
+        {/* <LayoutGrid></LayoutGrid> */}
       </div>
     </div>
   );
