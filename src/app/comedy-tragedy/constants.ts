@@ -2,13 +2,16 @@ export type TrackItem = { src: string; word: string };
 
 export const ONE_MINUTE = 10 * 1000;
 
+export const COMEDY_PATH = '/dance-of-mind-site' + '/images/comedy.png';
+export const TRAGEDY_PATH = '/dance-of-mind-site' + '/images/tragedy.png';
+
 export const IMAGES = {
   comedy: {
-    src: '/dance-of-mind-site' + '/images/comedy.png',
+    src: COMEDY_PATH,
     alt: 'Комедия',
   },
   tragedy: {
-    src: '/dance-of-mind-site' + '/images/tragedy.png',
+    src: TRAGEDY_PATH,
     alt: 'Трагедия',
   },
 };

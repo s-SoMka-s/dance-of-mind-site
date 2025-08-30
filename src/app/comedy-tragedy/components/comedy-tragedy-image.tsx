@@ -5,7 +5,11 @@ import { motion } from 'motion/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { IMAGE_ANIMATION_DURATION } from '@/app/comedy-tragedy/constants';
+import {
+  COMEDY_PATH,
+  IMAGE_ANIMATION_DURATION,
+  TRAGEDY_PATH,
+} from '@/app/comedy-tragedy/constants';
 
 type Props = {
   store: {
@@ -17,7 +21,7 @@ type Props = {
 };
 
 const ComedyTragedyImageImpl = ({ store, isError }: Props) => {
-  const src = store.isSolved || !store.wrongActive ? '/images/comedy.png' : '/images/tragedy.png';
+  const src = store.isSolved || !store.wrongActive ? COMEDY_PATH : TRAGEDY_PATH;
   const alt = store.isSolved || !store.wrongActive ? 'Комедия' : 'Трагедия';
   const isTragedy = !store.isSolved && store.wrongActive;
 
