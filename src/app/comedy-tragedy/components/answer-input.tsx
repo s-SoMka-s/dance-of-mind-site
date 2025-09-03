@@ -6,6 +6,7 @@ import { useState } from 'react';
 type Props = {
   store: {
     isSolved: boolean;
+    isError: boolean;
     checkAnswer: (v: string) => void;
   };
   onStart?: () => void;
@@ -21,6 +22,7 @@ const AnswerInputImpl = ({ store, onStart }: Props) => {
           className="w-full rounded-md border border-white/30 bg-black/40 text-white placeholder:text-white/50 px-4 py-3 outline-none focus:ring-2 focus:ring-white/50"
           placeholder={'Введите слово для текущего трека'}
           value={val}
+          disabled={store.isError}
           onChange={(e) => setVal(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') store.checkAnswer(val);

@@ -7,8 +7,11 @@ import { useLocalStore } from './comedy-tragedy.store';
 import { ComedyTragedyImage, AnswerInput, AudioPlayer } from './components';
 import { useQuestLocalStore } from '@/app/comedy-tragedy/store';
 import { TRACKS } from '@/app/comedy-tragedy/config/audio.config';
+import { useEffect, useState } from 'react';
 
 function PageImpl() {
+  const [particlesSpeed, setParticlesSpeed] = useState(PARTICLES.defaultSpeed);
+
   const store = useLocalStore({
     defaultSpeed: PARTICLES.defaultSpeed,
     defaultDensity: PARTICLES.defaultDensity,
@@ -25,6 +28,16 @@ function PageImpl() {
 
   console.log('Rendering ComedyTragedy Page');
 
+  useEffect(() => {
+    if (questStore.isError) {
+      setParticlesSpeed(PARTICLES.errorSpeed);
+    } else if (questStore.isSolved) {
+      setParticlesSpeed(PARTICLES.successSpeed);
+    } else {
+      setParticlesSpeed(PARTICLES.defaultSpeed);
+    }
+  }, [questStore.isError, questStore.isSolved]);
+
   return (
     <div className="relative min-h-screen w-full bg-black flex flex-col items-center justify-center overflow-x-hidden">
       <AudioPlayer onTrackSet={onTrackSet} />
@@ -35,7 +48,7 @@ function PageImpl() {
           background="transparent"
           minSize={PARTICLES.minSize}
           maxSize={PARTICLES.maxSize}
-          speed={store.particleSpeed}
+          speed={particlesSpeed}
           particleDensity={store.particleDensity}
           className="w-full h-full"
           particleColor={PARTICLES.color}

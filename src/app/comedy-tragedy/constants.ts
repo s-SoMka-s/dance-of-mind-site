@@ -4,8 +4,9 @@ export const PARTICLES = {
   minSize: 0.6,
   maxSize: 1.4,
   color: '#FFFFFF',
-  defaultSpeed: 4,
+  defaultSpeed: 3.2,
   defaultDensity: 120,
+  errorSpeed: 10,
   successSpeed: 12,
   successDensity: 200,
 };
