@@ -12,6 +12,7 @@ const createLocalStore = (props: TComedyTragedyQuestStoreProps) => {
 
     setExpectedAnswer: function (val: string) {
       this.expectedAnswer = val;
+      console.log('Expected answer set to: ', val);
     },
     checkAnswer: function (val: string) {
       if (norm(val) && norm(val) === norm(this.expectedAnswer)) {
