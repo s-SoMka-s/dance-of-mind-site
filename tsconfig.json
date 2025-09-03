@@ -20,8 +20,11 @@
       }
     ],
     "paths": {
+      "images/*": ["public/images/*"],
+      "audio/*": ["public/audio/*"],
       "@hooks/*": ["src/app/hooks/*"],
       "@store/*": ["src/store/*"],
+      "@lib/*": ["src/lib/*"],
       "@/*": ["src/*"]
     }
   },

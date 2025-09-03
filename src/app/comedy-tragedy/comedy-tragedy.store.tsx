@@ -22,8 +22,9 @@ const createLocalStore = (props: TComedyTragedyStoreProps) => {
 
   return {
     // state
-    expectedWord: '' as string,
-    isSolved: false as boolean,
+    expectedWord: '',
+    isError: false,
+    isSolved: false,
     particleSpeed: defaults.defaultSpeed,
     particleDensity: defaults.defaultDensity,
     wrongActive: false as boolean,
@@ -40,23 +41,6 @@ const createLocalStore = (props: TComedyTragedyStoreProps) => {
       this.particleDensity = defaults.defaultDensity;
 
       this.isSolved = false;
-    },
-    checkAnswer: function (val: string) {
-      const norm = (s: string) => s.trim().toLowerCase();
-
-      if (norm(val) && norm(val) === norm(this.expectedWord)) {
-        this.isSolved = true;
-        this.particleSpeed = defaults.successSpeed;
-        this.particleDensity = defaults.successDensity;
-      } else {
-        // wrong answer pulse: switch to tragedy briefly and shake
-        this.wrongActive = true;
-        this.wrongToken += 1;
-        // reset back after short delay
-        setTimeout(() => {
-          this.wrongActive = false;
-        }, 700);
-      }
     },
   };
 };

@@ -2,9 +2,11 @@
 
 import { SparklesCore } from '@/components/ui/sparkles';
 import { observer } from 'mobx-react-lite';
-import { PARTICLES, TRACKS } from './constants';
+import { PARTICLES } from './constants';
 import { useLocalStore } from './comedy-tragedy.store';
 import { ComedyTragedyImage, AnswerInput, AudioPlayer } from './components';
+import { useQuestLocalStore } from '@/app/comedy-tragedy/store';
+import { TRACKS } from '@/app/comedy-tragedy/config/audio.config';
 
 function PageImpl() {
   const store = useLocalStore({
@@ -14,10 +16,11 @@ function PageImpl() {
     successDensity: PARTICLES.successDensity,
   });
 
+  const questStore = useQuestLocalStore(null);
+
   const onTrackSet = (index: number) => {
     const answer = TRACKS[index].word;
-    store.setExpectedAnswer(answer);
-    console.log('new answer', answer);
+    questStore.setExpectedAnswer(answer);
   };
 
   console.log('Rendering ComedyTragedy Page');
@@ -41,10 +44,10 @@ function PageImpl() {
 
       <div className="relative z-10 flex flex-col gap-6 items-center w-full max-w-5xl px-4">
         <div className="w-full flex flex-col items-center justify-center gap-6 pt-10">
-          <ComedyTragedyImage store={store} isError={false} />
+          <ComedyTragedyImage store={questStore} />
         </div>
 
-        <AnswerInput store={store} />
+        <AnswerInput store={questStore} />
       </div>
     </div>
   );

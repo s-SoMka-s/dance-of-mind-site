@@ -1,31 +1,4 @@
-export type TrackItem = { src: string; word: string };
-
-export const ONE_MINUTE = 10 * 1000;
-
-export const COMEDY_PATH = '/dance-of-mind-site' + '/images/comedy.png';
-export const TRAGEDY_PATH = '/dance-of-mind-site' + '/images/tragedy.png';
-
-export const IMAGES = {
-  comedy: {
-    src: COMEDY_PATH,
-    alt: 'Комедия',
-  },
-  tragedy: {
-    src: TRAGEDY_PATH,
-    alt: 'Трагедия',
-  },
-};
-
-export const TRACKS: TrackItem[] = [
-  { src: '/dance-of-mind-site' + '/audio/1.mp3', word: 'тест' },
-  { src: '/dance-of-mind-site' + '/audio/2.mp3', word: 'тест' },
-  { src: '/dance-of-mind-site' + '/audio/3.mp3', word: 'тест' },
-  { src: '/dance-of-mind-site' + '/audio/4.mp3', word: 'тест' },
-  { src: '/dance-of-mind-site' + '/audio/5.mp3', word: 'тест' },
-  { src: '/dance-of-mind-site' + '/audio/6.mp3', word: 'тест' },
-  { src: '/dance-of-mind-site' + '/audio/7.mp3', word: 'тест' },
-  { src: '/dance-of-mind-site' + '/audio/8.mp3', word: 'тест' },
-];
+export const ERROR_DURATION = 3 * 1000; // 8 секунд
 
 export const PARTICLES = {
   minSize: 0.6,

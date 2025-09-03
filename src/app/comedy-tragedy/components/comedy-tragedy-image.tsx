@@ -5,29 +5,31 @@ import { motion } from 'motion/react';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  COMEDY_PATH,
-  IMAGE_ANIMATION_DURATION,
-  TRAGEDY_PATH,
-} from '@/app/comedy-tragedy/constants';
+import { IMAGE_ANIMATION_DURATION } from '@/app/comedy-tragedy/constants';
+
+import comedyImg from 'images/comedy.webp';
+import tragedyImg from 'images/tragedy.webp';
+import { useAudioPlayer } from 'react-use-audio-player';
 
 type Props = {
   store: {
+    isError: boolean;
     isSolved: boolean;
-    wrongActive: boolean;
-    wrongToken: number;
   };
-  isError: boolean;
 };
 
-const ComedyTragedyImageImpl = ({ store, isError }: Props) => {
-  const src = store.isSolved || !store.wrongActive ? COMEDY_PATH : TRAGEDY_PATH;
-  const alt = store.isSolved || !store.wrongActive ? 'Комедия' : 'Трагедия';
-  const isTragedy = !store.isSolved && store.wrongActive;
-
+const ComedyTragedyImageImpl = ({ store }: Props) => {
   const router = useRouter();
 
-  // Navigate to who-i-am after fly-through completes
+  const { load, pause } = useAudioPlayer();
+
+  const onError = () => {
+    load('audio/error.wav', {
+      initialVolume: 1,
+      autoplay: true,
+    });
+  };
+
   useEffect(() => {
     if (!store.isSolved) return;
     const id = window.setTimeout(() => {
@@ -35,6 +37,16 @@ const ComedyTragedyImageImpl = ({ store, isError }: Props) => {
     }, IMAGE_ANIMATION_DURATION); // match the fly-through duration
     return () => clearTimeout(id);
   }, [store.isSolved, router]);
+
+  useEffect(() => {
+    console.log('isError changed:', store.isError);
+
+    if (store.isError) {
+      onError();
+    } else {
+      pause();
+    }
+  }, [store.isError]);
 
   return (
     <motion.div
@@ -48,13 +60,13 @@ const ComedyTragedyImageImpl = ({ store, isError }: Props) => {
           : { type: 'tween', duration: 0.2, ease: 'easeOut' }
       }
     >
-      <motion.div
-        key={store.wrongToken}
-        animate={store.wrongActive ? { x: [0, -10, 10, -8, 8, -5, 5, 0] } : { x: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <Image src={src} alt={alt} width={320} height={570} color="red" priority />
-      </motion.div>
+      {!store.isError ? (
+        <Image src={comedyImg} alt={'Comedy'} width={320} height={570} priority />
+      ) : (
+        <motion.div animate={{ x: [0, -10, 10, -8, 8, -5, 5, 0] }} transition={{ duration: 0.6 }}>
+          <Image src={tragedyImg} alt={'Tragedy'} width={320} height={570} priority />
+        </motion.div>
+      )}
     </motion.div>
   );
 };

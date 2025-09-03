@@ -1,4 +1,4 @@
-import { ONE_MINUTE, TRACKS } from '@/app/comedy-tragedy/constants';
+import { TRACK_INTERVAL_DURATION, TRACKS } from '@/app/comedy-tragedy/config/audio.config';
 import { usePageVisibilityPause } from '@hooks/usePageVisibilityPause';
 import { useEffect, useState } from 'react';
 import { useAudioPlayer } from 'react-use-audio-player';
@@ -26,7 +26,7 @@ export const AudioPlayer = (props: Props) => {
     setCurrentTrackIndex(index);
   };
 
-  useInterval(onInterval, isRunning ? ONE_MINUTE : null);
+  useInterval(onInterval, isRunning ? TRACK_INTERVAL_DURATION : null);
 
   const onHide = () => {
     setIsRunning(false);
