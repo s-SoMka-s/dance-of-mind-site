@@ -1,15 +1,19 @@
 'use client';
 
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
+import { Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { AppStoreProvider } from '@store/AppStoreProvider';
 import { AudioPlayerProvider, useAudioPlayer } from 'react-use-audio-player';
 import { useEffect } from 'react';
 
-const geistSans = Geist({
+// Local primary font for all site text
+const customSans = localFont({
+  src: './mint.otf',
   variable: '--font-geist-sans',
-  subsets: ['latin'],
+  weight: '400',
+  style: 'normal',
+  display: 'swap',
 });
 
 const geistMono = Geist_Mono({
@@ -35,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-screen min-h-screen`}
+        className={`${customSans.className} ${customSans.variable} ${geistMono.variable} antialiased w-screen min-h-screen`}
       >
         <AudioPlayerProvider>
           <AppStoreProvider>{children}</AppStoreProvider>
