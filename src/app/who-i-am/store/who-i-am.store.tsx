@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { createContext, useContext } from 'react';
 import { useLocalObservable } from 'mobx-react-lite';
@@ -11,16 +11,7 @@ export type TWhoIAmCard = {
 
 type TWhoIAmStoreProps = null;
 
-const REQUIRED_WORDS = ['я', 'твой', 'голос', 'внутри'];
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+export const REQUIRED_WORDS = ['я', 'твой', 'голос', 'внутри'];
 
 function generateCards(): TWhoIAmCard[] {
   const required: TWhoIAmCard[] = REQUIRED_WORDS.map((w, idx) => ({
@@ -34,7 +25,7 @@ function generateCards(): TWhoIAmCard[] {
     text: `карта-${i + 1}`,
   }));
 
-  return shuffle([...required, ...fillers]);
+  return [...required, ...fillers];
 }
 
 const createLocalStore = (_props: TWhoIAmStoreProps) => {
@@ -42,6 +33,8 @@ const createLocalStore = (_props: TWhoIAmStoreProps) => {
     // Инициализация без случайностей на сервере для избежания hydration mismatch
     cards: REQUIRED_WORDS.map((w, idx) => ({ id: `required-${idx + 1}`, text: w })),
     selectedIds: observable.set<string>(),
+    // Прогресс совпадения фразы по порядку: 0..REQUIRED_WORDS.length
+    sequenceProgress: 0,
 
     init: function () {
       // Генерация случайных карточек только на клиенте после маунта
@@ -51,10 +44,26 @@ const createLocalStore = (_props: TWhoIAmStoreProps) => {
     },
 
     pickCard: function (card: TWhoIAmCard) {
-      if (this.selectedIds.has(card.id)) {
+      const wasSelected = this.selectedIds.has(card.id);
+
+      if (wasSelected) {
         this.selectedIds.delete(card.id);
+        // На снятие выбора прогресс не двигаем
+        return;
+      }
+
+      // На выбор карточки добавляем в Set и проверяем прогресс фразы
+      this.selectedIds.add(card.id);
+
+      const word = card.text.trim().toLowerCase();
+      const expected = REQUIRED_WORDS[this.sequenceProgress];
+
+      if (word === expected) {
+        this.sequenceProgress += 1;
       } else {
-        this.selectedIds.add(card.id);
+        // Если ошиблись — начинать заново, но если клик совпадает с первым словом,
+        // то прогресс становится 1, иначе 0
+        this.sequenceProgress = word === REQUIRED_WORDS[0] ? 1 : 0;
       }
     },
 
