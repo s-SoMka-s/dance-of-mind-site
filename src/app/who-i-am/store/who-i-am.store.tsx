@@ -2,6 +2,7 @@
 
 import { createContext, useContext } from 'react';
 import { useLocalObservable } from 'mobx-react-lite';
+import { observable } from 'mobx';
 
 export type TWhoIAmCard = {
   id: string;
@@ -40,7 +41,7 @@ const createLocalStore = (_props: TWhoIAmStoreProps) => {
   return {
     // Инициализация без случайностей на сервере для избежания hydration mismatch
     cards: REQUIRED_WORDS.map((w, idx) => ({ id: `required-${idx + 1}`, text: w })),
-    selected: [] as TWhoIAmCard[],
+    selectedIds: observable.set<string>(),
 
     init: function () {
       // Генерация случайных карточек только на клиенте после маунта
@@ -50,16 +51,15 @@ const createLocalStore = (_props: TWhoIAmStoreProps) => {
     },
 
     pickCard: function (card: TWhoIAmCard) {
-      const exists = this.selected.some((c) => c.id === card.id);
-      if (exists) {
-        this.selected = this.selected.filter((c) => c.id !== card.id);
+      if (this.selectedIds.has(card.id)) {
+        this.selectedIds.delete(card.id);
       } else {
-        this.selected = [...this.selected, card];
+        this.selectedIds.add(card.id);
       }
     },
 
     isSelected: function (cardId: string) {
-      return this.selected.some((c) => c.id === cardId);
+      return this.selectedIds.has(cardId);
     },
   };
 };

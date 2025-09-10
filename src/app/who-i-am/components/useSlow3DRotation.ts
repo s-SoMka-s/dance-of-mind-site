@@ -4,62 +4,55 @@ import { useEffect, useRef } from "react";
 import { usePageVisibilityPause } from "@/app/hooks/usePageVisibilityPause";
 
 /**
- * Медленное 3D-вращение для вложенного элемента (контента карточки).
- * Обновляет style.transform напрямую, не мешая внешнему translate3d.
+ * Медленное 3D-вращение через CSS-анимацию (без JS RAF).
+ * Ко-локально с карточкой, но не грузит основной поток кадрами.
  */
 export function useSlow3DRotation<T extends HTMLElement>() {
   const elRef = useRef<T | null>(null);
-  const rafRef = useRef<number | null>(null);
-  const startTsRef = useRef<number | null>(null);
-  const runningRef = useRef(true);
 
-  const step = (ts: number) => {
-    if (!runningRef.current) return;
+  useEffect(() => {
     const el = elRef.current;
     if (!el) return;
 
-    if (startTsRef.current == null) startTsRef.current = ts;
-    const t = (ts - startTsRef.current) / 1000; // seconds
-
-    // Медленные гармонические вращения
-    const rx = 5 * Math.sin(t * 0.2); // ±5deg
-    const ry = 8 * Math.cos(t * 0.15); // ±8deg
-    const rz = 2 * Math.sin(t * 0.1); // лёгкий дрейф по Z
-
-    el.style.transform = `rotateX(${rx.toFixed(3)}deg) rotateY(${ry.toFixed(3)}deg) rotateZ(${rz.toFixed(3)}deg)`;
+    ensureKeyframesInstalled();
     el.style.transformStyle = "preserve-3d";
+    el.style.backfaceVisibility = "hidden";
+    el.style.animation = `${ANIM_NAME} 16s ease-in-out infinite alternate`;
 
-    if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(step);
-  };
-
-  const start = () => {
-    if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(step);
-  };
-
-  const stop = () => {
-    if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-    rafRef.current = null;
-  };
-
-  useEffect(() => {
-    start();
-    return () => stop();
+    return () => {
+      el.style.animation = "";
+    };
   }, []);
 
   usePageVisibilityPause(
     () => {
-      runningRef.current = false;
-      stop();
+      const el = elRef.current;
+      if (el) el.style.animationPlayState = "paused";
     },
     () => {
-      runningRef.current = true;
-      startTsRef.current = null;
-      start();
+      const el = elRef.current;
+      if (el) el.style.animationPlayState = "running";
     }
   );
 
   return { ref: elRef } as const;
 }
 
+const STYLE_ID = "whoiam-rotation-keyframes";
+const ANIM_NAME = "whoiam-slow-3d";
+
+function ensureKeyframesInstalled() {
+  if (typeof document === "undefined") return;
+  if (document.getElementById(STYLE_ID)) return;
+  const style = document.createElement("style");
+  style.id = STYLE_ID;
+  style.textContent = `
+@keyframes ${ANIM_NAME} {
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  33% { transform: rotateX(5deg) rotateY(-8deg) rotateZ(2deg); }
+  66% { transform: rotateX(-5deg) rotateY(8deg) rotateZ(-2deg); }
+  100% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+}
+`;
+  document.head.appendChild(style);
+}
