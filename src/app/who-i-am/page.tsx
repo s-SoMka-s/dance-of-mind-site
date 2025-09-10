@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { reaction } from 'mobx';
 import { REQUIRED_WORDS } from './store/who-i-am.store';
+import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 
 const WhoIAmPage = observer(function WhoIAmPageInner() {
   const store = useWhoIAmLocalStore();
@@ -55,6 +56,11 @@ const WhoIAmPage = observer(function WhoIAmPageInner() {
         {Array.from({ length: cardsCount }).map((_, i) => (
           <FloatingCard key={`fc-${i}`} />
         ))}
+      </div>
+
+      {/* Центральный текстовый вопрос */}
+      <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+        <TextGenerateEffect words="Кто ты?" className="text-center" />
       </div>
 
       {/* 3 слой — парящие слова из стора (кликабельные). Делаем выше прочего. */}
