@@ -1,5 +1,6 @@
-'use client';
+"use client";
 
+import { createContext, useContext } from 'react';
 import { useLocalObservable } from 'mobx-react-lite';
 
 export type TWhoIAmCard = {
@@ -37,8 +38,16 @@ function generateCards(): TWhoIAmCard[] {
 
 const createLocalStore = (_props: TWhoIAmStoreProps) => {
   return {
-    cards: generateCards() as TWhoIAmCard[],
+    // Инициализация без случайностей на сервере для избежания hydration mismatch
+    cards: REQUIRED_WORDS.map((w, idx) => ({ id: `required-${idx + 1}`, text: w })),
     selected: [] as TWhoIAmCard[],
+
+    init: function () {
+      // Генерация случайных карточек только на клиенте после маунта
+      if (typeof window !== 'undefined') {
+        this.cards = generateCards();
+      }
+    },
 
     pickCard: function (card: TWhoIAmCard) {
       const exists = this.selected.some((c) => c.id === card.id);
@@ -59,3 +68,10 @@ export const useWhoIAmLocalStore = (props: TWhoIAmStoreProps = null) => {
   return useLocalObservable(() => createLocalStore(props));
 };
 
+export type TWhoIAmStore = ReturnType<typeof createLocalStore>;
+export const WhoIAmStoreContext = createContext<TWhoIAmStore | null>(null);
+export const useWhoIAmStore = () => {
+  const store = useContext(WhoIAmStoreContext);
+  if (!store) throw new Error('WhoIAmStoreContext not found');
+  return store;
+};
