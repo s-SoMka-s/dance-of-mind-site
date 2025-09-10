@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { PARTICLES } from '@/app/comedy-tragedy/constants';
 import { SparklesCore } from '@/components/ui/sparkles';
@@ -32,7 +32,7 @@ const WhoIAmPage = observer(function WhoIAmPageInner() {
   }, [store, router]);
 
   // Количество визуальных карточек во 2 слое (без текста)
-  const cardsCount = 12;
+  const cardsCount = 54;
 
   return (
     <div className="relative min-h-screen w-full bg-black flex flex-col items-center justify-center overflow-hidden">

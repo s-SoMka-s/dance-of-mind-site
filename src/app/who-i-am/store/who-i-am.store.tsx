@@ -11,7 +11,33 @@ export type TWhoIAmCard = {
 
 type TWhoIAmStoreProps = null;
 
-export const REQUIRED_WORDS = ['я', 'твой', 'голос', 'внутри'];
+export const REQUIRED_WORDS = ['Я', 'Твой', 'Голос', 'Внутри'];
+
+export const OTHER_WORDS = [
+  'Ночной',
+  'Дух',
+  'Театра',
+  'HUMANITY',
+  'Топливо',
+  'Для',
+  'Идей',
+  'Художник',
+  'Собиратель',
+  'Душ',
+  'Пассивно',
+  'Дохнущий',
+  'Полупсих',
+  'Зверь',
+  'Не',
+  'Враг',
+  'Гострайтер',
+  'Памяти',
+  'Дворец',
+  'Расплавленный',
+  'Космос',
+  'Выключатель',
+  'Солнца',
+];
 
 function generateCards(): TWhoIAmCard[] {
   const required: TWhoIAmCard[] = REQUIRED_WORDS.map((w, idx) => ({
@@ -19,10 +45,9 @@ function generateCards(): TWhoIAmCard[] {
     text: w,
   }));
 
-  const fillerCount = 54 - required.length; // 50
-  const fillers: TWhoIAmCard[] = Array.from({ length: fillerCount }, (_, i) => ({
+  const fillers: TWhoIAmCard[] = OTHER_WORDS.map((w, i) => ({
     id: `card-${i + 1}`,
-    text: `карта-${i + 1}`,
+    text: w,
   }));
 
   return [...required, ...fillers];
