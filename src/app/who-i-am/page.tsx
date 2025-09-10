@@ -11,10 +11,12 @@ import { useRouter } from 'next/navigation';
 import { reaction } from 'mobx';
 import { REQUIRED_WORDS } from './store/who-i-am.store';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
+import { useViewportSize } from '@hooks/useViewportSize';
 
 const WhoIAmPage = observer(function WhoIAmPageInner() {
   const store = useWhoIAmLocalStore();
   const router = useRouter();
+  const viewport = useViewportSize();
   useEffect(() => {
     store.init();
   }, [store]);
@@ -50,14 +52,12 @@ const WhoIAmPage = observer(function WhoIAmPageInner() {
           particleColor={PARTICLES.color}
         />
       </div>
-
       {/* 2 слой — летающие карточки с мягким 3D-вращением */}
       <div className="absolute inset-0 z-10 pointer-events-none">
         {Array.from({ length: cardsCount }).map((_, i) => (
-          <FloatingCard key={`fc-${i}`} />
+          <FloatingCard key={`fc-${i}`} viewport={viewport} />
         ))}
       </div>
-
       {/* Центральный текстовый вопрос */}
       <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
         <TextGenerateEffect words="Кто ты?" className="text-center" />
@@ -67,7 +67,7 @@ const WhoIAmPage = observer(function WhoIAmPageInner() {
       <WhoIAmStoreContext.Provider value={store}>
         <div className="absolute inset-0 z-40 pointer-events-auto">
           {store.cards.map((card) => (
-            <WordItem key={card.id} card={card} />
+            <WordItem key={card.id} card={card} viewport={viewport} />
           ))}
         </div>
       </WhoIAmStoreContext.Provider>
