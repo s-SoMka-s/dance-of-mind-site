@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo, useState } from "react";
-import { motion } from "motion/react";
-import "./floating-card.css";
-import { clamp, randBetween } from "./utils";
-import type { ViewportSize } from "@hooks/useViewportSize";
+import React, { useMemo } from 'react';
+import { motion } from 'motion/react';
+import './floating-card.css';
+import { clamp, randBetween } from './utils';
+import type { ViewportSize } from '@hooks/useViewportSize';
 
 /**
  * Полупрозрачная карточка с закруглёнными углами.
@@ -14,8 +14,8 @@ import type { ViewportSize } from "@hooks/useViewportSize";
 type Props = { viewport: ViewportSize };
 
 export function FloatingCard({ viewport }: Props) {
-  // Размер карточки (фиксируем после монтирования для случайности)
-  const [size, setSize] = useState<{ w: number; h: number }>({ w: 160, h: 100 });
+  // Константный размер «как у игральной карты» (соотношение ~2.5:3.5)
+  const size = { w: 160, h: 224 } as const;
 
   // Инициализация случайных параметров один раз
   const random = useMemo(() => {
@@ -32,14 +32,6 @@ export function FloatingCard({ viewport }: Props) {
       // Небольшая случайная задержка, чтобы не синхронизировались
       delay: randBetween(0, 4),
     } as const;
-  }, []);
-
-  // Генерируем случайный размер
-  useEffect(() => {
-    setSize({
-      w: Math.round(randBetween(120, 220)),
-      h: Math.round(randBetween(60, 140)),
-    });
   }, []);
 
   // Когда знаем размеры окна — считаем диапазоны и старт
@@ -73,8 +65,8 @@ export function FloatingCard({ viewport }: Props) {
         ready
           ? {
               delay: random.delay,
-              x: { duration: random.durX, repeat: Infinity, repeatType: "mirror", ease: "linear" },
-              y: { duration: random.durY, repeat: Infinity, repeatType: "mirror", ease: "linear" },
+              x: { duration: random.durX, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
+              y: { duration: random.durY, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
             }
           : undefined
       }
@@ -82,10 +74,14 @@ export function FloatingCard({ viewport }: Props) {
       <div
         className="w-full h-full rounded-xl fc-rotate-3d"
         style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-          backdropFilter: "blur(2px)",
+          // Заглушка-обложка из public/images/cards
+          backgroundImage: 'url(/images/cards/placeholder.svg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.35)',
+          overflow: 'hidden',
         }}
       />
     </motion.div>
