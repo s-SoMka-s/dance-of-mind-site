@@ -1,0 +1,34 @@
+@property --ab-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.card-animated-border {
+  --ab-radius: 16px;
+  --ab-width: 2px;
+  --ab-speed: 4.4s;
+  --ab-angle: 0deg;
+  border-radius: var(--ab-radius);
+  padding: var(--ab-width);
+  background: conic-gradient(
+    from var(--ab-angle),
+    rgba(255, 255, 255, 0) 0deg,
+    rgba(255, 255, 255, 0) 320deg,
+    rgba(255, 255, 255, 0.75) 360deg
+  );
+  animation: card-ab-rotate var(--ab-speed) linear infinite;
+  // Mask the fill so only a thin ring remains
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.15) inset;
+  mix-blend-mode: screen;
+}
+
+@keyframes card-ab-rotate {
+  to {
+    --ab-angle: 360deg;
+  }
+}

@@ -5,12 +5,14 @@ import { CometCard } from '@/components/ui/comet-card';
 import { cn } from '@/lib/utils';
 import { motion, useAnimationControls } from 'motion/react';
 import { useState } from 'react';
+import './card-animated-border.scss';
 
 type Props = {
   className?: string;
+  isTarget?: boolean;
 };
 
-export function Card({ className }: Props) {
+export function Card({ className, isTarget = true }: Props) {
   const controls = useAnimationControls();
   const [spinning, setSpinning] = useState(false);
 
@@ -55,6 +57,15 @@ export function Card({ className }: Props) {
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
               priority={false}
             />
+            {isTarget && (
+              <span
+                aria-hidden
+                className={cn(
+                  'pointer-events-none absolute inset-0 rounded-[16px] shadow-none',
+                  'card-animated-border'
+                )}
+              />
+            )}
           </div>
         </CometCard>
       </motion.div>
