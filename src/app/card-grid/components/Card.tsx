@@ -6,6 +6,9 @@ import { cn } from '@/lib/utils';
 import { motion, useAnimationControls } from 'motion/react';
 import { useState } from 'react';
 import { useCardGridStore } from '../store';
+
+import cardPlaceholder from 'images/cards/placeholder.svg';
+
 import './card-animated-border.scss';
 
 type Props = {
@@ -56,7 +59,7 @@ export function Card({ className, isTarget = false }: Props) {
         >
           <div className="relative w-full" style={{ aspectRatio: '250 / 350' }}>
             <Image
-              src="/images/cards/placeholder.svg"
+              src={cardPlaceholder}
               alt="Playing card back"
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
