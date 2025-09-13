@@ -1,12 +1,8 @@
 import { CardGrid } from './components/CardGrid';
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const phraseParam = searchParams?.phrase;
-  const phrase = Array.isArray(phraseParam) ? phraseParam[0] : phraseParam;
+export default function Page() {
+  const phrase = 'я твой голос внутри';
+
   return (
     <div
       className="h-screen w-screen overflow-hidden bg-cover bg-center bg-no-repeat"

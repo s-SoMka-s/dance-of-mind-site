@@ -6,22 +6,34 @@ import { shuffle } from '@lib/array.utils';
 export type LettersStore = {
   letters: string[];
   selectedIdx: Set<number>;
+  selectedLetters: Set<string>;
   toggle: (index: number) => void;
   setPhrase: (phrase?: string) => void;
+  checkExpected: (expected: string) => void;
 };
 
 export const createLettersStore = ({ phrase }: { phrase?: string }): LettersStore => ({
   letters: phrase ? shuffle(splitToLetters(phrase)) : [],
   selectedIdx: new Set<number>(),
+  selectedLetters: new Set<string>(),
+
   toggle(index: number) {
     const i = index | 0;
-    if (this.selectedIdx.has(i)) this.selectedIdx.delete(i);
-    else this.selectedIdx.add(i);
+    const letter = this.letters[i];
+    if (this.selectedIdx.has(i)) {
+      this.selectedIdx.delete(i);
+      this.selectedLetters.delete(letter);
+    } else {
+      this.selectedIdx.add(i);
+      this.selectedLetters.add(letter);
+    }
   },
   setPhrase(phrase?: string) {
     this.letters = phrase ? shuffle(splitToLetters(phrase)) : [];
     this.selectedIdx.clear();
   },
+
+  checkExpected(expected: string) {},
 });
 
 const LettersCtx = createContext<LettersStore | null>(null);
