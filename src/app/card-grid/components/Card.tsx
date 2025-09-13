@@ -5,6 +5,7 @@ import { CometCard } from '@/components/ui/comet-card';
 import { cn } from '@/lib/utils';
 import { motion, useAnimationControls } from 'motion/react';
 import { useState } from 'react';
+import { useCardGridStore } from '../store';
 import './card-animated-border.scss';
 
 type Props = {
@@ -12,7 +13,8 @@ type Props = {
   isTarget?: boolean;
 };
 
-export function Card({ className, isTarget = true }: Props) {
+export function Card({ className, isTarget = false }: Props) {
+  const store = useCardGridStore();
   const controls = useAnimationControls();
   const [spinning, setSpinning] = useState(false);
 
@@ -32,6 +34,9 @@ export function Card({ className, isTarget = true }: Props) {
       controls.set({ rotateY: 0, z: 0 });
     } finally {
       setSpinning(false);
+      if (isTarget) {
+        store.nextTarget();
+      }
     }
   };
 

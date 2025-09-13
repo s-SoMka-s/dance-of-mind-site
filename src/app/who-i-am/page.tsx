@@ -27,7 +27,8 @@ const WhoIAmPage = observer(function WhoIAmPageInner() {
       () => store.sequenceProgress,
       (progress) => {
         if (progress >= REQUIRED_WORDS.length) {
-          router.push('/card-grid');
+          const phrase = 'я твой голос внутри';
+          router.push(`/card-grid?phrase=${encodeURIComponent(phrase)}`);
         }
       }
     );
