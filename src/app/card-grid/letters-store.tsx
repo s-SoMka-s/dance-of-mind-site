@@ -4,7 +4,7 @@ import { splitToLetters } from '@lib/string.utils';
 import { shuffle } from '@lib/array.utils';
 
 export type LettersStore = {
-  letters: string[];
+  letters: { id: string; ch: string }[];
   selectedIdx: Set<number>;
   selectedLetters: Set<string>;
   required: Set<string>;
@@ -18,27 +18,35 @@ export type LettersStore = {
 };
 
 export const createLettersStore = ({ phrase, expected }: { phrase?: string; expected?: string }): LettersStore => ({
-  letters: phrase ? shuffle(splitToLetters(phrase)) : [],
+  letters: phrase
+    ? shuffle(
+        splitToLetters(phrase).map((ch, i) => ({ id: `ltr-${i}-${ch}-${Math.random().toString(36).slice(2)}`, ch }))
+      )
+    : [],
   selectedIdx: new Set<number>(),
   selectedLetters: new Set<string>(),
   required: new Set(expected ? splitToLetters(expected) : []),
 
   toggle(index: number) {
     const i = index | 0;
-    const letter = this.letters[i];
+    const item = this.letters[i];
     if (this.selectedIdx.has(i)) {
       this.selectedIdx.delete(i);
-      this.selectedLetters.delete(letter);
+      this.selectedLetters.delete(item?.ch);
     } else {
       this.selectedIdx.add(i);
-      this.selectedLetters.add(letter);
+      if (item) this.selectedLetters.add(item.ch);
     }
 
     // After any change, check completion and reshuffle if needed
     this.reshuffleIfComplete();
   },
   setPhrase(phrase?: string) {
-    this.letters = phrase ? shuffle(splitToLetters(phrase)) : [];
+    this.letters = phrase
+      ? shuffle(
+          splitToLetters(phrase).map((ch, i) => ({ id: `ltr-${i}-${ch}-${Math.random().toString(36).slice(2)}`, ch }))
+        )
+      : [];
     this.selectedIdx.clear();
     this.selectedLetters.clear();
   },

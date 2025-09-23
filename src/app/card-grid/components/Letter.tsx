@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useLettersStore } from '../letters-store';
 import { cn } from '@/lib/utils';
+import { motion } from 'motion/react';
 
 type Props = {
   ch: string;
@@ -12,7 +13,9 @@ export const Letter = observer(function Letter({ ch, index }: Props) {
   const selected = letters.selectedIdx.has(index);
 
   return (
-    <button
+    <motion.button
+      layout
+      transition={{ type: 'spring', stiffness: 500, damping: 40, mass: 0.6 }}
       onClick={() => letters.toggle(index)}
       className={cn(
         'cursor-pointer rounded-md text-sm sm:text-base md:text-lg text-white/90 mx-0.5 my-0.5 sm:mx-1 sm:my-1',
@@ -27,6 +30,6 @@ export const Letter = observer(function Letter({ ch, index }: Props) {
       }}
     >
       {ch}
-    </button>
+    </motion.button>
   );
 });

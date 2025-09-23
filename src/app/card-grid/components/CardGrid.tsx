@@ -6,6 +6,7 @@ import { CardGridStoreProvider, useCardGridStore } from '../store';
 import { LettersStoreProvider, useLettersStore } from '../letters-store';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { motion } from 'motion/react';
 
 const GridInner = observer(function GridInner() {
   const store = useCardGridStore();
@@ -23,11 +24,15 @@ const GridInner = observer(function GridInner() {
       </section>
 
       {letters.letters.length > 0 && (
-        <section className="flex flex-wrap items-center justify-center">
-          {letters.letters.map((ch, idx) => (
-            <Letter key={`ch-${idx}-${ch}`} ch={ch} index={idx} />
+        <motion.section
+          layout
+          className="flex flex-wrap items-center justify-center"
+          transition={{ type: 'spring', stiffness: 500, damping: 40, mass: 0.6 }}
+        >
+          {letters.letters.map((item, idx) => (
+            <Letter key={item.id} ch={item.ch} index={idx} />
           ))}
-        </section>
+        </motion.section>
       )}
     </div>
   );
