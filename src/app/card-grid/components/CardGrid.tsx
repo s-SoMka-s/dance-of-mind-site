@@ -38,7 +38,7 @@ export function CardGrid({ phrase }: { phrase?: string }) {
   const total = 14;
   return (
     <CardGridStoreProvider initialTotalCount={total}>
-      <LettersStoreProvider phrase={phrase ?? 'я твой голос внутри'}>
+      <LettersStoreProvider phrase={phrase ?? 'я твой голос внутри'} expected={'твой'}>
         <GridInner />
       </LettersStoreProvider>
     </CardGridStoreProvider>
