@@ -30,9 +30,30 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
+        id: build_and_push
         uses: docker/build-push-action@v5.3.0
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send redeploy signal
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          WEBHOOK_TOKEN: ${{ secrets.WEBHOOK_TOKEN }}
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_HOST }}
+          DOCKER_IMAGE: dance-of-mind-web
+        run: |
+          set -euo pipefail
+          JSON_PAYLOAD=$(printf '{"registry":"%s","image":"%s","tag":"%s"}' "$DOCKER_REGISTRY" "$DOCKER_IMAGE" "master")
+          echo "Payload: $JSON_PAYLOAD"
+          curl -sS -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -H "X-Webhook-Token: $WEBHOOK_TOKEN" \
+            --fail \
+            -d "$JSON_PAYLOAD"
