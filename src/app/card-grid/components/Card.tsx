@@ -12,11 +12,14 @@ import cardPlaceholder from 'images/cards/back.svg';
 import './card-animated-border.scss';
 
 type Props = {
+  index: number;
   className?: string;
   isTarget?: boolean;
 };
 
-export function Card({ className, isTarget = false }: Props) {
+import cardFace from 'images/cards/placeholder.svg';
+
+export function Card({ index, className, isTarget = false }: Props) {
   const store = useCardGridStore();
   const controls = useAnimationControls();
   const [spinning, setSpinning] = useState(false);
@@ -59,8 +62,8 @@ export function Card({ className, isTarget = false }: Props) {
         >
           <div className="relative w-full" style={{ aspectRatio: '250 / 350' }}>
             <Image
-              src={cardPlaceholder}
-              alt="Playing card back"
+              src={store.isRevealed(index) ? cardFace : cardPlaceholder}
+              alt={store.isRevealed(index) ? 'Playing card face' : 'Playing card back'}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
               priority={false}

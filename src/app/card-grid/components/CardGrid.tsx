@@ -1,7 +1,6 @@
 'use client';
 
 import { Card } from './Card';
-import { HiddenCard } from './HiddenCard';
 import { Letter } from './Letter';
 import { CardGridStoreProvider, useCardGridStore } from '../store';
 import { LettersStoreProvider, useLettersStore } from '../letters-store';
@@ -18,11 +17,7 @@ const GridInner = observer(function GridInner() {
       <section className="grid gap-2 sm:gap-3 grid-cols-[repeat(auto-fit,minmax(160px,1fr))]">
         {cards.map((_, i) => (
           <div key={i} className="flex items-center justify-center p-3">
-            {store.isRemoved(i) ? (
-              <HiddenCard className="w-full" />
-            ) : (
-              <Card className="w-full" isTarget={store.isTarget(i)} />
-            )}
+            <Card index={i} className="w-full" isTarget={store.isTarget(i)} />
           </div>
         ))}
       </section>

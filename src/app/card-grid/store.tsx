@@ -4,10 +4,10 @@ import { observer, useLocalObservable } from 'mobx-react-lite';
 export type CardGridStore = {
   totalCount: number;
   targetIndex: number;
-  removed: Set<number>;
+  revealed: Set<number>;
   setTotalCount: (n: number) => void;
   isTarget: (index: number) => boolean;
-  isRemoved: (index: number) => boolean;
+  isRevealed: (index: number) => boolean;
   activeCount: () => number;
   nextTarget: () => void;
 };
@@ -15,40 +15,40 @@ export type CardGridStore = {
 export const createCardGridStore = (initialTotalCount = 0): CardGridStore => ({
   totalCount: initialTotalCount,
   targetIndex: 0,
-  removed: new Set<number>(),
+  revealed: new Set<number>(),
   setTotalCount(n: number) {
     // Меняем общее количество карт. Следим, чтобы targetIndex оставался валидным.
     this.totalCount = Math.max(0, n | 0);
     if (this.totalCount === 0) this.targetIndex = 0;
     else this.targetIndex = this.targetIndex % this.totalCount;
-    // Чистим удалённые индексы, выходящие за пределы
-    for (const i of Array.from(this.removed)) {
-      if (i >= this.totalCount) this.removed.delete(i);
+    // Чистим открытые индексы, выходящие за пределы
+    for (const i of Array.from(this.revealed)) {
+      if (i >= this.totalCount) this.revealed.delete(i);
     }
   },
   isTarget(index: number) {
-    return this.totalCount > 0 && !this.removed.has(index | 0) && (index | 0) === this.targetIndex;
+    return this.totalCount > 0 && !this.revealed.has(index | 0) && (index | 0) === this.targetIndex;
   },
-  isRemoved(index: number) {
-    return this.removed.has(index | 0);
+  isRevealed(index: number) {
+    return this.revealed.has(index | 0);
   },
   activeCount() {
-    return Math.max(0, this.totalCount - this.removed.size);
+    return Math.max(0, this.totalCount - this.revealed.size);
   },
   nextTarget() {
     if (this.totalCount === 0) return;
-    // Удаляем текущую таргет-карту из активных
-    this.removed.add(this.targetIndex);
+    // Открываем текущую таргет-карту
+    this.revealed.add(this.targetIndex);
 
-    // Если все удалены — таргета больше нет
-    if (this.removed.size >= this.totalCount) {
-      return; // остаётся последний индекс в targetIndex, но он уже удалён
+    // Если все открыты — таргета больше нет
+    if (this.revealed.size >= this.totalCount) {
+      return; // остаётся последний индекс в targetIndex, но он уже открыт
     }
 
-    // Выбираем следующий таргет случайно из не удалённых
+    // Выбираем следующий таргет случайно из не открытых
     const available: number[] = [];
     for (let i = 0; i < this.totalCount; i++) {
-      if (!this.removed.has(i)) available.push(i);
+      if (!this.revealed.has(i)) available.push(i);
     }
     if (available.length > 0) {
       const rnd = Math.floor(Math.random() * available.length);
