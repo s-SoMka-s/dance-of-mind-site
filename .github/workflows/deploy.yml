@@ -6,7 +6,7 @@ on:
       - 'master'
 env:
   REGISTRY: ${{ secrets.DOCKER_HOST }}
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: dance-of-mind-web
 
 jobs:
   build:
