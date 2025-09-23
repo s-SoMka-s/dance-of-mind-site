@@ -4,7 +4,6 @@ import { CardGrid } from './components/CardGrid';
 import wallImg from 'images/wall.webp';
 
 export default function Page() {
-  // TODO
   const phrase = 'я твой голос внутри';
 
   return (
