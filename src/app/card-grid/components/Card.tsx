@@ -7,7 +7,7 @@ import { motion, useAnimationControls } from 'motion/react';
 import { useState } from 'react';
 import { useCardGridStore } from '../store';
 
-import cardPlaceholder from 'images/cards/placeholder.svg';
+import cardPlaceholder from 'images/cards/back.svg';
 
 import './card-animated-border.scss';
 
