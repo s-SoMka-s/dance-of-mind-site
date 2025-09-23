@@ -2,12 +2,14 @@ import { createContext, useContext } from 'react';
 import { observer, useLocalObservable } from 'mobx-react-lite';
 import { splitToLetters } from '@lib/string.utils';
 import { shuffle } from '@lib/array.utils';
+import { useCardGridStore } from './store';
 
 export type LettersStore = {
   letters: { id: string; ch: string }[];
   selectedIdx: Set<number>;
   selectedLetters: Set<string>;
   required: Set<string>;
+  onComplete?: () => void;
   toggle: (index: number) => void;
   setPhrase: (phrase?: string) => void;
   setExpected: (expected?: string) => void;
@@ -17,7 +19,15 @@ export type LettersStore = {
   reshuffleIfComplete: () => void;
 };
 
-export const createLettersStore = ({ phrase, expected }: { phrase?: string; expected?: string }): LettersStore => ({
+export const createLettersStore = ({
+  phrase,
+  expected,
+  onComplete,
+}: {
+  phrase?: string;
+  expected?: string;
+  onComplete?: () => void;
+}): LettersStore => ({
   letters: phrase
     ? shuffle(
         splitToLetters(phrase).map((ch, i) => ({ id: `ltr-${i}-${ch}-${Math.random().toString(36).slice(2)}`, ch }))
@@ -26,6 +36,7 @@ export const createLettersStore = ({ phrase, expected }: { phrase?: string; expe
   selectedIdx: new Set<number>(),
   selectedLetters: new Set<string>(),
   required: new Set(expected ? splitToLetters(expected) : []),
+  onComplete,
 
   toggle(index: number) {
     const i = index | 0;
@@ -78,6 +89,8 @@ export const createLettersStore = ({ phrase, expected }: { phrase?: string; expe
     this.letters = shuffle(this.letters);
     this.selectedIdx.clear();
     this.selectedLetters.clear();
+    // Сообщаем об окончании набора слова
+    this.onComplete?.();
   },
 });
 
@@ -92,7 +105,10 @@ export const LettersStoreProvider = observer(function LettersStoreProvider({
   phrase?: string;
   expected?: string;
 }) {
-  const store = useLocalObservable(() => createLettersStore({ phrase, expected }));
+  const grid = useCardGridStore();
+  const store = useLocalObservable(() =>
+    createLettersStore({ phrase, expected, onComplete: () => grid.nextTarget() })
+  );
   return <LettersCtx.Provider value={store}>{children}</LettersCtx.Provider>;
 });
 

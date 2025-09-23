@@ -9,6 +9,7 @@ export type CardGridStore = {
   isTarget: (index: number) => boolean;
   isRevealed: (index: number) => boolean;
   activeCount: () => number;
+  revealTarget: () => void;
   nextTarget: () => void;
 };
 
@@ -27,7 +28,8 @@ export const createCardGridStore = (initialTotalCount = 0): CardGridStore => ({
     }
   },
   isTarget(index: number) {
-    return this.totalCount > 0 && !this.revealed.has(index | 0) && (index | 0) === this.targetIndex;
+    const i = index | 0;
+    return this.totalCount > 0 && this.targetIndex >= 0 && i === this.targetIndex;
   },
   isRevealed(index: number) {
     return this.revealed.has(index | 0);
@@ -35,14 +37,17 @@ export const createCardGridStore = (initialTotalCount = 0): CardGridStore => ({
   activeCount() {
     return Math.max(0, this.totalCount - this.revealed.size);
   },
+  // Отдельно открываем текущую target-карту, не меняя targetIndex
+  revealTarget() {
+    if (this.totalCount === 0) return;
+    this.revealed.add(this.targetIndex);
+  },
   nextTarget() {
     if (this.totalCount === 0) return;
-    // Открываем текущую таргет-карту
-    this.revealed.add(this.targetIndex);
-
-    // Если все открыты — таргета больше нет
+    // Если все открыты — нового таргета нет
     if (this.revealed.size >= this.totalCount) {
-      return; // остаётся последний индекс в targetIndex, но он уже открыт
+      this.targetIndex = -1;
+      return;
     }
 
     // Выбираем следующий таргет случайно из не открытых

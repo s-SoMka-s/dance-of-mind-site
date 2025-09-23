@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useLettersStore } from '../letters-store';
+import { useCardGridStore } from '../store';
 import { cn } from '@/lib/utils';
 import { motion } from 'motion/react';
 
@@ -10,16 +11,24 @@ type Props = {
 
 export const Letter = observer(function Letter({ ch, index }: Props) {
   const letters = useLettersStore();
+  const grid = useCardGridStore();
   const selected = letters.selectedIdx.has(index);
+  // Разрешаем выбор буквы только если текущая target-карта открыта лицом вверх
+  const canPick = grid.isRevealed(grid.targetIndex);
 
   return (
     <motion.button
       layout
       transition={{ type: 'spring', stiffness: 500, damping: 40, mass: 0.6 }}
-      onClick={() => letters.toggle(index)}
+      onClick={() => {
+        if (!canPick) return;
+        letters.toggle(index);
+      }}
+      disabled={!canPick}
       className={cn(
-        'cursor-pointer rounded-md text-sm sm:text-base md:text-lg text-white/90 mx-0.5 my-0.5 sm:mx-1 sm:my-1',
-        selected ? 'ring-2 ring-sky-500/80 ring-offset-0 ring-offset-transparent' : 'ring-0'
+        'rounded-md text-sm sm:text-base md:text-lg text-white/90 mx-0.5 my-0.5 sm:mx-1 sm:my-1',
+        selected ? 'ring-2 ring-sky-500/80 ring-offset-0 ring-offset-transparent' : 'ring-0',
+        canPick ? 'cursor-pointer opacity-100' : 'opacity-50'
       )}
       style={{
         background: selected ? 'rgba(14,165,233,0.08)' : 'rgba(255,255,255,0.04)',

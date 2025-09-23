@@ -41,7 +41,9 @@ export function Card({ index, className, isTarget = false }: Props) {
     } finally {
       setSpinning(false);
       if (isTarget) {
-        store.nextTarget();
+        // Только открываем текущую target-карту. Переключение на следующую
+        // произойдёт после того как пользователь соберёт нужное слово.
+        store.revealTarget();
       }
     }
   };
