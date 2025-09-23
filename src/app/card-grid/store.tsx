@@ -45,14 +45,14 @@ export const createCardGridStore = (initialTotalCount = 0): CardGridStore => ({
       return; // остаётся последний индекс в targetIndex, но он уже удалён
     }
 
-    // Ищем следующий не удалённый индекс, циклически
-    const next = (this.targetIndex + 1) % this.totalCount;
+    // Выбираем следующий таргет случайно из не удалённых
+    const available: number[] = [];
     for (let i = 0; i < this.totalCount; i++) {
-      const idx = (next + i) % this.totalCount;
-      if (!this.removed.has(idx)) {
-        this.targetIndex = idx;
-        return;
-      }
+      if (!this.removed.has(i)) available.push(i);
+    }
+    if (available.length > 0) {
+      const rnd = Math.floor(Math.random() * available.length);
+      this.targetIndex = available[rnd];
     }
   },
 });
