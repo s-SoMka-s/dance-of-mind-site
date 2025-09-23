@@ -26,7 +26,7 @@ export const Letter = observer(function Letter({ ch, index }: Props) {
       }}
       disabled={!canPick}
       className={cn(
-        'rounded-md text-sm sm:text-base md:text-lg text-white/90 mx-0.5 my-0.5 sm:mx-1 sm:my-1',
+        'rounded-md text-[1.05rem] sm:text-[1.2rem] md:text-[1.35rem] text-white/90 mx-0.5 my-0.5 sm:mx-1 sm:my-1',
         selected ? 'ring-2 ring-sky-500/80 ring-offset-0 ring-offset-transparent' : 'ring-0',
         canPick ? 'cursor-pointer opacity-100' : 'opacity-50'
       )}
