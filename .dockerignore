@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Next build directories
+out
+
+# Logs and env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.env
+.env.*
+
+# Git and editor
+.git
+.gitignore
+.DS_Store
+.idea
+.vscode
+
+# Misc
+dist
+coverage
+*.swp
+*.tmp
+**/*.tsbuildinfo
+
