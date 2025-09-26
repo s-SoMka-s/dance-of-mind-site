@@ -1,1 +1,1 @@
-export { useQuestLocalStore } from './comedy-tragedy-quest.store';
+export { useQuestLocalStore } from './quest.store';

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useLettersStore } from '../letters-store';
 import { useCardGridStore } from '../store';
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/css.utils';
 import { motion } from 'motion/react';
 
 type Props = {

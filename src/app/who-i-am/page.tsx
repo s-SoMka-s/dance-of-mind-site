@@ -1,6 +1,5 @@
 'use client';
 
-import { PARTICLES } from '@/app/comedy-tragedy/constants';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { FloatingCard } from './components/FloatingCard';
 import { WordItem } from './components/WordItem';
@@ -12,6 +11,7 @@ import { reaction } from 'mobx';
 import { REQUIRED_WORDS } from './store/who-i-am.store';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { useViewportSize } from '@hooks/useViewportSize';
+import { PARTICLES } from '@comedy-tragedy/config';
 
 const WhoIAmPage = observer(function WhoIAmPageInner() {
   const store = useWhoIAmLocalStore();

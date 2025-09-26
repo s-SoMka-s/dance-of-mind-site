@@ -25,6 +25,10 @@
       "@hooks/*": ["src/app/hooks/*"],
       "@store/*": ["src/store/*"],
       "@lib/*": ["src/lib/*"],
+      "@models": ["src/models"],
+      "@models/*": ["src/models/*"],
+
+      "@comedy-tragedy/*": ["src/app/comedy-tragedy/*"],
       "@/*": ["src/*"]
     }
   },

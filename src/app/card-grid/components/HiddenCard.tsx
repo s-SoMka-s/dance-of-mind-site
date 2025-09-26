@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/css.utils';
 
 type Props = {
   className?: string;
@@ -16,4 +16,3 @@ export function HiddenCard({ className }: Props) {
     </div>
   );
 }
-

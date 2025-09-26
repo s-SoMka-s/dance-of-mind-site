@@ -2,7 +2,7 @@
 
 import React, { JSX, useState } from 'react';
 import { motion } from 'motion/react';
-import { cn } from '@/lib/utils';
+import { cn } from '@lib/css.utils';
 
 type Card = {
   id: number;
