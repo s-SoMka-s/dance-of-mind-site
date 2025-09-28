@@ -27,7 +27,10 @@
       "@hooks/*": ["src/hooks/*"],
 
       "@store/*": ["src/store/*"],
-      "@lib/*": ["src/lib/*"],
+
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"],
+
       "@models": ["src/models"],
       "@models/*": ["src/models/*"],
 

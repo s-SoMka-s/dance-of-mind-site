@@ -1,6 +1,6 @@
 import { useLocalObservable } from 'mobx-react-lite';
 
-import { norm } from '@lib/string.utils';
+import { norm } from '@utils';
 import { ERROR_ANIMATION_DURATION } from '@comedy-tragedy/config';
 import { EQuestState } from '@models';
 

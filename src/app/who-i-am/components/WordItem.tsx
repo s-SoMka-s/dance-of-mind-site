@@ -6,7 +6,7 @@ import type { TWhoIAmCard } from '../store/who-i-am.store';
 import { REQUIRED_WORDS } from '../store/who-i-am.store';
 import { observer } from 'mobx-react-lite';
 import { useWhoIAmStore } from '../store/who-i-am.store';
-import { randBetween } from './utils';
+import { randBetween } from '@utils';
 import { ViewportSize } from '@models';
 
 type Props = { card: TWhoIAmCard; viewport: ViewportSize };

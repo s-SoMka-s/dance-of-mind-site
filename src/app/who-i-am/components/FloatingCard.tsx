@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import './floating-card.css';
-import { clamp, randBetween } from './utils';
+import { clamp, randBetween } from '@utils';
 import { ViewportSize } from '@models';
 
 /**

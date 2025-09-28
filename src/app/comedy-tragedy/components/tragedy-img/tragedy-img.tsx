@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { cn } from '@lib/css.utils';
+import { cn } from '@utils';
 import { useEffect } from 'react';
 import { useAudioPlayer } from 'react-use-audio-player';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@lib/css.utils';
+import { cn } from '@utils';
 
 type Props = {
   className?: string;

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { CometCard } from '@/components/ui/comet-card';
-import { cn } from '@lib/css.utils';
+import { cn } from '@utils';
 import { motion, useAnimationControls } from 'motion/react';
 import { useState } from 'react';
 import { useCardGridStore } from '../store';

@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 import { observer, useLocalObservable } from 'mobx-react-lite';
-import { splitToLetters } from '@lib/string.utils';
-import { shuffle } from '@lib/array.utils';
+import { shuffle, splitToLetters } from '@utils';
 import { useCardGridStore } from './store';
 
 export type LettersStore = {
@@ -30,7 +29,10 @@ export const createLettersStore = ({
 }): LettersStore => ({
   letters: phrase
     ? shuffle(
-        splitToLetters(phrase).map((ch, i) => ({ id: `ltr-${i}-${ch}-${Math.random().toString(36).slice(2)}`, ch }))
+        splitToLetters(phrase).map((ch, i) => ({
+          id: `ltr-${i}-${ch}-${Math.random().toString(36).slice(2)}`,
+          ch,
+        }))
       )
     : [],
   selectedIdx: new Set<number>(),
@@ -55,7 +57,10 @@ export const createLettersStore = ({
   setPhrase(phrase?: string) {
     this.letters = phrase
       ? shuffle(
-          splitToLetters(phrase).map((ch, i) => ({ id: `ltr-${i}-${ch}-${Math.random().toString(36).slice(2)}`, ch }))
+          splitToLetters(phrase).map((ch, i) => ({
+            id: `ltr-${i}-${ch}-${Math.random().toString(36).slice(2)}`,
+            ch,
+          }))
         )
       : [];
     this.selectedIdx.clear();
