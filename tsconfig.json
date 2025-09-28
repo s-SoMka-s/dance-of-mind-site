@@ -37,6 +37,7 @@
       // pages
       "@comedy-tragedy/*": ["src/app/comedy-tragedy/*"],
       "@who-are-you/*": ["src/app/who-are-you/*"],
+      "@card-grid/*": ["src/app/card-grid/*"],
 
       "@/*": ["src/*"]
     }

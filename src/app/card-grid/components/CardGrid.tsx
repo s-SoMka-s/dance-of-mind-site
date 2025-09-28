@@ -1,16 +1,15 @@
 'use client';
 
 import { Card } from './Card';
-import { Letter } from './Letter';
+import { Letter } from './letter';
 import { CardGridStoreProvider, useCardGridStore } from '../store';
 import { LettersStoreProvider, useLettersStore } from '../letters-store';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
 
 const GridInner = observer(function GridInner() {
   const store = useCardGridStore();
-  const letters = useLettersStore();
+
   const cards = Array.from({ length: store.totalCount });
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,18 +36,6 @@ const GridInner = observer(function GridInner() {
           </div>
         ))}
       </section>
-
-      {letters.letters.length > 0 && (
-        <motion.section
-          layout
-          className="fixed bottom-0 left-0 right-0 z-40 flex flex-wrap items-center justify-center gap-1 px-3 py-2 bg-black/55 backdrop-blur-sm border-t border-white/10"
-          transition={{ type: 'spring', stiffness: 500, damping: 40, mass: 0.6 }}
-        >
-          {letters.letters.map((item, idx) => (
-            <Letter key={item.id} ch={item.ch} index={idx} />
-          ))}
-        </motion.section>
-      )}
     </div>
   );
 });
