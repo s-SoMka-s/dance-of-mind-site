@@ -28,13 +28,13 @@ export const Quest = observer(({ store }: TProps) => {
   const isError = store.state === EQuestState.Error;
   const isSolved = store.state === EQuestState.Solved;
 
-  useEffect(() => {
-    if (!isSolved) return;
-    const id = window.setTimeout(() => {
-      router.push('/who-i-am');
-    }, SUCCESS_ANIMATION_DURATION_SEC * 1000);
-    return () => clearTimeout(id);
-  }, [isSolved, router]);
+  // useEffect(() => {
+  //   if (!isSolved) return;
+  //   const id = window.setTimeout(() => {
+  //     router.push('/who-i-am');
+  //   }, SUCCESS_ANIMATION_DURATION_SEC * 1000);
+  //   return () => clearTimeout(id);
+  // }, [isSolved, router]);
 
   return (
     <div className="relative z-10 flex flex-col gap-6 items-center w-full max-w-5xl px-4">

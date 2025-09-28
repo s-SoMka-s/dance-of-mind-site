@@ -22,7 +22,10 @@
     "paths": {
       "images/*": ["public/images/*"],
       "audio/*": ["public/audio/*"],
-      "@hooks/*": ["src/app/hooks/*"],
+
+      "@hooks": ["src/hooks"],
+      "@hooks/*": ["src/hooks/*"],
+
       "@store/*": ["src/store/*"],
       "@lib/*": ["src/lib/*"],
       "@models": ["src/models"],

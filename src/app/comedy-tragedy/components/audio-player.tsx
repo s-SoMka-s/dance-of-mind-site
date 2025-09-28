@@ -1,5 +1,5 @@
 import { TRACK_INTERVAL_DURATION, TRACKS } from '@/app/comedy-tragedy/config/audio.config';
-import { usePageVisibilityPause } from '@hooks/usePageVisibilityPause';
+import { usePageVisibilityPause } from '@hooks';
 import { useEffect, useState } from 'react';
 import { useAudioPlayer } from 'react-use-audio-player';
 import { useInterval } from 'usehooks-ts';

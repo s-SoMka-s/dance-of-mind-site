@@ -7,7 +7,7 @@ import { REQUIRED_WORDS } from '../store/who-i-am.store';
 import { observer } from 'mobx-react-lite';
 import { useWhoIAmStore } from '../store/who-i-am.store';
 import { randBetween } from './utils';
-import type { ViewportSize } from '@hooks/useViewportSize';
+import { ViewportSize } from '@models';
 
 type Props = { card: TWhoIAmCard; viewport: ViewportSize };
 
@@ -58,7 +58,12 @@ export const WordItem = observer(function WordItem({ card, viewport }: Props) {
     const startY = Math.round(rnd.startYPct * yMax);
     const tx = rnd.dirX < 0 ? 0 : xMax;
     const ty = rnd.dirY < 0 ? 0 : yMax;
-    return { initialX: startX + margin, initialY: startY + margin, targetX: tx + margin, targetY: ty + margin };
+    return {
+      initialX: startX + margin,
+      initialY: startY + margin,
+      targetX: tx + margin,
+      targetY: ty + margin,
+    };
   }, [viewport, elemSize, rnd]);
 
   return (

@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import './floating-card.css';
 import { clamp, randBetween } from './utils';
-import type { ViewportSize } from '@hooks/useViewportSize';
+import { ViewportSize } from '@models';
 
 /**
  * Полупрозрачная карточка с закруглёнными углами.

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { reaction } from 'mobx';
 import { REQUIRED_WORDS } from './store/who-i-am.store';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
-import { useViewportSize } from '@hooks/useViewportSize';
+import { useViewportSize } from '@hooks';
 import { PARTICLES } from '@comedy-tragedy/config';
 
 const WhoIAmPage = observer(function WhoIAmPageInner() {
