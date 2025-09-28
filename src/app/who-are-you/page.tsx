@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { useViewportSize } from '@hooks';
 import { PARTICLES } from '@comedy-tragedy/config';
-import { FloatingWordsLayer } from '@who-are-you/components';
+import { FloatingCard, FloatingWordsLayer } from '@who-are-you/components';
 
 const WhoIAmPage = observer(function WhoIAmPageInner() {
   const viewport = useViewportSize();

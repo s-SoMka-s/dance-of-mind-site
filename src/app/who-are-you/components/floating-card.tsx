@@ -46,23 +46,15 @@ export function FloatingCard({ viewport }: Props) {
       className="absolute"
       style={{ width: CARD_SIZE.w, height: CARD_SIZE.h }}
       initial={ready ? { x: initialX, y: initialY } : false}
-      animate={
-        ready
-          ? {
-              x: [initialX, targetX],
-              y: [initialY, targetY],
-            }
-          : undefined
-      }
-      transition={
-        ready
-          ? {
-              delay: random.delay,
-              x: { duration: random.durX, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
-              y: { duration: random.durY, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
-            }
-          : undefined
-      }
+      animate={{
+        x: [initialX, targetX],
+        y: [initialY, targetY],
+      }}
+      transition={{
+        delay: random.delay,
+        x: { duration: random.durX, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
+        y: { duration: random.durY, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
+      }}
     >
       <motion.div
         className="w-full h-full rounded-xl"

@@ -4,6 +4,7 @@ import { createContext, useContext } from 'react';
 import { useLocalObservable } from 'mobx-react-lite';
 import { observable } from 'mobx';
 import { OTHER_WORDS, REQUIRED_WORDS } from '@who-are-you/config';
+import { norm } from '@utils';
 
 export type TWhoIAmCard = {
   id: string;
@@ -53,7 +54,7 @@ const createLocalStore = () => {
       const word = card.text.trim().toLowerCase();
       const expected = REQUIRED_WORDS[this.sequenceProgress];
 
-      if (word === expected) {
+      if (norm(word) === norm(expected)) {
         this.sequenceProgress += 1;
       } else {
         // Если ошиблись — начинать заново, но если клик совпадает с первым словом,
