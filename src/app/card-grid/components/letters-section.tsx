@@ -1,7 +1,9 @@
+'use client';
+
 import { motion } from 'motion/react';
 
 import { useLettersStore } from '@card-grid/store';
-import { Letter } from './letter';
+import { Letter } from './letter/letter';
 import { useEffect } from 'react';
 
 type Props = {

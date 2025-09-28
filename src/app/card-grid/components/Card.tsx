@@ -5,24 +5,25 @@ import { CometCard } from '@/components/ui/comet-card';
 import { cn } from '@utils';
 import { motion, useAnimationControls } from 'motion/react';
 import { useState } from 'react';
-import { useCardGridStore } from '../store';
 
 import cardPlaceholder from 'images/cards/back.svg';
+
+import cardFace from 'images/cards/placeholder.svg';
+import { TCardsStore } from '@card-grid/store';
 
 import './card-animated-border.scss';
 
 type Props = {
   index: number;
   className?: string;
-  isTarget?: boolean;
+  store: TCardsStore;
 };
 
-import cardFace from 'images/cards/placeholder.svg';
-
-export function Card({ index, className, isTarget = false }: Props) {
-  const store = useCardGridStore();
+export function Card({ index, className, store }: Props) {
   const controls = useAnimationControls();
   const [spinning, setSpinning] = useState(false);
+
+  const isTarget = store.targetIndex === index;
 
   const handleClick = async () => {
     if (spinning) return;
