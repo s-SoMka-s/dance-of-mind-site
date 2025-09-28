@@ -3,41 +3,12 @@
 import { createContext, useContext } from 'react';
 import { useLocalObservable } from 'mobx-react-lite';
 import { observable } from 'mobx';
+import { OTHER_WORDS, REQUIRED_WORDS } from '@who-are-you/config';
 
 export type TWhoIAmCard = {
   id: string;
   text: string;
 };
-
-type TWhoIAmStoreProps = null;
-
-export const REQUIRED_WORDS = ['Я', 'Твой', 'Голос', 'Внутри'];
-
-export const OTHER_WORDS = [
-  'Ночной',
-  'Дух',
-  'Театра',
-  'HUMANITY',
-  'Топливо',
-  'Для',
-  'Идей',
-  'Художник',
-  'Собиратель',
-  'Душ',
-  'Пассивно',
-  'Дохнущий',
-  'Полупсих',
-  'Зверь',
-  'Не',
-  'Враг',
-  'Гострайтер',
-  'Памяти',
-  'Дворец',
-  'Расплавленный',
-  'Космос',
-  'Выключатель',
-  'Солнца',
-];
 
 function generateCards(): TWhoIAmCard[] {
   const required: TWhoIAmCard[] = REQUIRED_WORDS.map((w, idx) => ({
@@ -53,13 +24,12 @@ function generateCards(): TWhoIAmCard[] {
   return [...required, ...fillers];
 }
 
-const createLocalStore = (_props: TWhoIAmStoreProps) => {
+const createLocalStore = () => {
   return {
-    // Инициализация без случайностей на сервере для избежания hydration mismatch
     cards: REQUIRED_WORDS.map((w, idx) => ({ id: `required-${idx + 1}`, text: w })),
     selectedIds: observable.set<string>(),
-    // Прогресс совпадения фразы по порядку: 0..REQUIRED_WORDS.length
     sequenceProgress: 0,
+    isSolved: false,
 
     init: function () {
       // Генерация случайных карточек только на клиенте после маунта
@@ -68,7 +38,7 @@ const createLocalStore = (_props: TWhoIAmStoreProps) => {
       }
     },
 
-    pickCard: function (card: TWhoIAmCard) {
+    pickWord: function (card: TWhoIAmCard) {
       const wasSelected = this.selectedIds.has(card.id);
 
       if (wasSelected) {
@@ -90,16 +60,24 @@ const createLocalStore = (_props: TWhoIAmStoreProps) => {
         // то прогресс становится 1, иначе 0
         this.sequenceProgress = word === REQUIRED_WORDS[0] ? 1 : 0;
       }
+
+      if (this.sequenceProgress >= REQUIRED_WORDS.length) {
+        this.isSolved = true;
+      }
     },
 
     isSelected: function (cardId: string) {
       return this.selectedIds.has(cardId);
     },
+
+    isTarget: function (word: string) {
+      return REQUIRED_WORDS.includes(word.trim().toLowerCase());
+    },
   };
 };
 
-export const useWhoIAmLocalStore = (props: TWhoIAmStoreProps = null) => {
-  return useLocalObservable(() => createLocalStore(props));
+export const useWhoIAmLocalStore = () => {
+  return useLocalObservable(() => createLocalStore());
 };
 
 export type TWhoIAmStore = ReturnType<typeof createLocalStore>;

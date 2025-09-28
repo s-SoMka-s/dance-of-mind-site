@@ -1,10 +1,10 @@
 'use client';
 
-import { ViewportSize } from '@models';
+import { TSize } from '@models';
 import { useEffect, useState } from 'react';
 
-export function useViewportSize(): ViewportSize {
-  const [vp, setVp] = useState<ViewportSize>({ w: 0, h: 0 });
+export function useViewportSize(): TSize {
+  const [vp, setVp] = useState<TSize>({ w: 0, h: 0 });
 
   useEffect(() => {
     const update = () => setVp({ w: window.innerWidth, h: window.innerHeight });

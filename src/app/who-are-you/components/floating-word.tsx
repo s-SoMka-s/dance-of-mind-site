@@ -3,25 +3,21 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import type { TWhoIAmCard } from '../store/who-i-am.store';
-import { REQUIRED_WORDS } from '../store/who-i-am.store';
-import { observer } from 'mobx-react-lite';
-import { useWhoIAmStore } from '../store/who-i-am.store';
 import { randBetween } from '@utils';
-import { ViewportSize } from '@models';
+import { TSize } from '@models';
 
-type Props = { card: TWhoIAmCard; viewport: ViewportSize };
+type Props = {
+  word: TWhoIAmCard;
+  viewport: TSize;
+  isSelected: boolean;
+  isTarget: boolean;
+  pickWord: (word: TWhoIAmCard) => void;
+};
 
-/**
- * Отдельное слово: парит по экрану, кликабельно, без 3D-вращения.
- */
-export const FloatingWord = observer(function WordItem({ card, viewport }: Props) {
-  const store = useWhoIAmStore();
-  const isTarget = REQUIRED_WORDS.includes(card.text.trim().toLowerCase());
-  const isSelected = store.selectedIds.has(card.id);
-
+export const FloatingWord = ({ word, viewport, isSelected, isTarget, pickWord }: Props) => {
   // Размер элемента, чтобы не выходить за края экрана
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const [elemSize, setElemSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
+  const [elemSize, setElemSize] = useState<TSize>({ w: 0, h: 0 });
   useEffect(() => {
     const measure = () => {
       const el = rootRef.current;
@@ -50,7 +46,7 @@ export const FloatingWord = observer(function WordItem({ card, viewport }: Props
 
   // Отступ от краев, чтобы слова не прилипали
   const margin = 16;
-  const ready = viewport.w > 0 && viewport.h > 0 && elemSize.w > 0 && elemSize.h > 0;
+  //  const ready = viewport.w > 0 && viewport.h > 0 && elemSize.w > 0 && elemSize.h > 0;
   const { initialX, initialY, targetX, targetY } = useMemo(() => {
     const xMax = Math.max(0, viewport.w - elemSize.w - margin * 2);
     const yMax = Math.max(0, viewport.h - elemSize.h - margin * 2);
@@ -75,27 +71,19 @@ export const FloatingWord = observer(function WordItem({ card, viewport }: Props
         zIndex: isTarget ? 100 : 10,
         pointerEvents: 'auto',
       }}
-      initial={ready ? { x: initialX, y: initialY } : false}
-      animate={
-        ready
-          ? {
-              x: [initialX, targetX],
-              y: [initialY, targetY],
-            }
-          : undefined
-      }
-      transition={
-        ready
-          ? {
-              delay: rnd.delay,
-              x: { duration: rnd.durX, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
-              y: { duration: rnd.durY, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
-            }
-          : undefined
-      }
+      initial={{ x: initialX, y: initialY }}
+      animate={{
+        x: [initialX, targetX],
+        y: [initialY, targetY],
+      }}
+      transition={{
+        delay: rnd.delay,
+        x: { duration: rnd.durX, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
+        y: { duration: rnd.durY, repeat: Infinity, repeatType: 'mirror', ease: 'linear' },
+      }}
     >
       <button
-        onClick={() => store.pickCard(card)}
+        onClick={() => pickWord(word)}
         className={
           'cursor-pointer rounded-md text-sm md:text-base text-white/90 ' +
           (isSelected ? ' ring-2 ring-sky-500/80 ring-offset-0 ring-offset-transparent' : ' ring-0')
@@ -111,8 +99,8 @@ export const FloatingWord = observer(function WordItem({ card, viewport }: Props
           pointerEvents: 'auto',
         }}
       >
-        {card.text}
+        {word.text}
       </button>
     </motion.div>
   );
-});
+};

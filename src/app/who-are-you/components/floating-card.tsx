@@ -3,11 +3,11 @@
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { clamp, randBetween } from '@utils';
-import { ViewportSize } from '@models';
+import { TSize } from '@models';
 
 import { CARD_SIZE } from '@who-are-you/config';
 
-type Props = { viewport: ViewportSize };
+type Props = { viewport: TSize };
 
 export function FloatingCard({ viewport }: Props) {
   // Инициализация случайных параметров один раз
