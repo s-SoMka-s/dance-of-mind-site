@@ -1,6 +1,6 @@
 import { EPage, TSize } from '@models';
 import { FloatingWord } from './floating-word';
-import { useWhoIAmLocalStore, WhoIAmStoreContext } from '@who-are-you/store/who-i-am.store';
+import { FloatingWordsContext, useWhoIAmLocalStore } from '@who-are-you/store';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -26,7 +26,7 @@ export const FloatingWordsLayer = observer(({ viewport }: TProps) => {
   }, []);
 
   return (
-    <WhoIAmStoreContext.Provider value={store}>
+    <FloatingWordsContext.Provider value={store}>
       <div className="absolute inset-0 z-40 pointer-events-auto">
         {store.cards.map((card) => (
           <FloatingWord
@@ -39,6 +39,6 @@ export const FloatingWordsLayer = observer(({ viewport }: TProps) => {
           />
         ))}
       </div>
-    </WhoIAmStoreContext.Provider>
+    </FloatingWordsContext.Provider>
   );
 });

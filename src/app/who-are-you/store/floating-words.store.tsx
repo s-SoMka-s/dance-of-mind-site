@@ -80,10 +80,10 @@ export const useWhoIAmLocalStore = () => {
   return useLocalObservable(() => createLocalStore());
 };
 
-export type TWhoIAmStore = ReturnType<typeof createLocalStore>;
-export const WhoIAmStoreContext = createContext<TWhoIAmStore | null>(null);
-export const useWhoIAmStore = () => {
-  const store = useContext(WhoIAmStoreContext);
-  if (!store) throw new Error('WhoIAmStoreContext not found');
+export type TFloatingWordsStore = ReturnType<typeof createLocalStore>;
+export const FloatingWordsContext = createContext<TFloatingWordsStore | null>(null);
+export const useFloatingWordsStore = () => {
+  const store = useContext(FloatingWordsContext);
+  if (!store) throw new Error('FloatingWordsContext not found');
   return store;
 };

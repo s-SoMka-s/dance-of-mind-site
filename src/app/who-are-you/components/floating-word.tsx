@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import type { TWhoIAmCard } from '../store/who-i-am.store';
+import type { TWhoIAmCard } from '../store/floating-words.store';
 import { randBetween } from '@utils';
 import { TSize } from '@models';
 
