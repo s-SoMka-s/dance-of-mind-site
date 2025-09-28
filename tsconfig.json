@@ -34,7 +34,10 @@
       "@models": ["src/models"],
       "@models/*": ["src/models/*"],
 
+      // pages
       "@comedy-tragedy/*": ["src/app/comedy-tragedy/*"],
+      "@who-are-you/*": ["src/app/who-are-you/*"],
+
       "@/*": ["src/*"]
     }
   },

@@ -17,7 +17,7 @@ type ParticlesProps = {
   speed?: number;
   particleColor?: string;
   particleDensity?: number;
-  particleDirection?: 'inside' | 'none';
+  particleDirection?: 'inside' | 'none' | 'outside';
 };
 export const SparklesCore = (props: ParticlesProps) => {
   const { id, className, background, minSize, maxSize, speed, particleColor, particleDensity } =

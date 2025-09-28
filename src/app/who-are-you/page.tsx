@@ -1,8 +1,7 @@
 'use client';
 
 import { SparklesCore } from '@/components/ui/sparkles';
-import { FloatingCard } from './components/FloatingCard';
-import { WordItem } from './components/WordItem';
+
 import { observer } from 'mobx-react-lite';
 import { useWhoIAmLocalStore, WhoIAmStoreContext } from './store/who-i-am.store';
 import { useEffect } from 'react';
@@ -12,6 +11,7 @@ import { REQUIRED_WORDS } from './store/who-i-am.store';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { useViewportSize } from '@hooks';
 import { PARTICLES } from '@comedy-tragedy/config';
+import { FloatingWord, FloatingCard } from '@who-are-you/components';
 
 const WhoIAmPage = observer(function WhoIAmPageInner() {
   const store = useWhoIAmLocalStore();
@@ -67,7 +67,7 @@ const WhoIAmPage = observer(function WhoIAmPageInner() {
       <WhoIAmStoreContext.Provider value={store}>
         <div className="absolute inset-0 z-40 pointer-events-auto">
           {store.cards.map((card) => (
-            <WordItem key={card.id} card={card} viewport={viewport} />
+            <FloatingWord key={card.id} card={card} viewport={viewport} />
           ))}
         </div>
       </WhoIAmStoreContext.Provider>

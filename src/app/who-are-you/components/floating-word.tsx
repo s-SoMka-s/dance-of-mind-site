@@ -14,7 +14,7 @@ type Props = { card: TWhoIAmCard; viewport: ViewportSize };
 /**
  * Отдельное слово: парит по экрану, кликабельно, без 3D-вращения.
  */
-export const WordItem = observer(function WordItem({ card, viewport }: Props) {
+export const FloatingWord = observer(function WordItem({ card, viewport }: Props) {
   const store = useWhoIAmStore();
   const isTarget = REQUIRED_WORDS.includes(card.text.trim().toLowerCase());
   const isSelected = store.selectedIds.has(card.id);

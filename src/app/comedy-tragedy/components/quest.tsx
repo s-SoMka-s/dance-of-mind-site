@@ -31,7 +31,7 @@ export const Quest = observer(({ store }: TProps) => {
   // useEffect(() => {
   //   if (!isSolved) return;
   //   const id = window.setTimeout(() => {
-  //     router.push('/who-i-am');
+  //     router.push(EPage.WhoAreYou);
   //   }, SUCCESS_ANIMATION_DURATION_SEC * 1000);
   //   return () => clearTimeout(id);
   // }, [isSolved, router]);
