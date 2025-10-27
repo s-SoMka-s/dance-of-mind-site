@@ -1,39 +1,34 @@
-import { CARDS_TOTAL_COUNT } from '@card-grid/config';
+import { CARDS, CARDS_TOTAL_COUNT } from '@card-grid/config';
 import { useLocalObservable } from 'mobx-react-lite';
 
 const createLocalStore = () => ({
-  targetIndex: 0,
-  revealed: new Set<number>(),
+  target: '2-of-clubs',
+  activeQuest: '',
+  solvedCards: new Set<string>(),
 
-  isTarget(itemId: string) {
-    return false;
+  isTarget(cardId: string) {
+    return this.target === cardId;
   },
 
-  isRevealed(index: number) {
-    return this.revealed.has(index | 0);
+  isSolved(cardId: string) {
+    return this.solvedCards.has(cardId);
   },
 
-  // Отдельно открываем текущую target-карту, не меняя targetIndex
-  revealTarget() {
-    this.revealed.add(this.targetIndex);
+  setActiveQuest(cardId: string) {
+    this.activeQuest = cardId;
   },
 
   nextTarget() {
-    // Если все открыты — нового таргета нет
-    if (this.revealed.size >= CARDS_TOTAL_COUNT) {
-      this.targetIndex = -1;
+    if (this.solvedCards.size >= CARDS_TOTAL_COUNT) {
       return;
     }
 
+    this.activeQuest = '';
+
     // Выбираем следующий таргет случайно из не открытых
-    const available: number[] = [];
-    for (let i = 0; i < CARDS_TOTAL_COUNT; i++) {
-      if (!this.revealed.has(i)) available.push(i);
-    }
-    if (available.length > 0) {
-      const rnd = Math.floor(Math.random() * available.length);
-      this.targetIndex = available[rnd];
-    }
+    const available = CARDS.filter((c) => !this.solvedCards.has(c));
+    const rnd = Math.floor(Math.random() * available.length);
+    this.target = available[rnd];
   },
 });
 

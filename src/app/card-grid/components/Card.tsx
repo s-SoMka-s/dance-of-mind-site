@@ -8,22 +8,20 @@ import { useState } from 'react';
 
 import cardPlaceholder from 'images/cards/back.svg';
 
-import cardFace from 'images/cards/placeholder.svg';
-import { TCardsStore } from '@card-grid/store';
-
 import './card-animated-border.scss';
 
 type Props = {
-  index: number;
-  className?: string;
-  store: TCardsStore;
+  cardId: string;
+  isTarget: boolean;
+  onRevealed: (cardId: string) => void;
 };
 
-export function Card({ index, className, store }: Props) {
-  const controls = useAnimationControls();
-  const [spinning, setSpinning] = useState(false);
+import cardFace from 'images/cards/placeholder.svg';
 
-  const isTarget = store.targetIndex === index;
+export const Card = ({ cardId, isTarget, onRevealed }: Props) => {
+  const controls = useAnimationControls();
+  const [revealed, setRevealed] = useState(false);
+  const [spinning, setSpinning] = useState(false);
 
   const handleClick = async () => {
     if (spinning) return;
@@ -42,15 +40,14 @@ export function Card({ index, className, store }: Props) {
     } finally {
       setSpinning(false);
       if (isTarget) {
-        // Только открываем текущую target-карту. Переключение на следующую
-        // произойдёт после того как пользователь соберёт нужное слово.
-        store.revealTarget();
+        onRevealed(cardId);
+        setRevealed(true);
       }
     }
   };
 
   return (
-    <div className={cn('w-full perspective-distant transform-3d', className)}>
+    <div className={cn('w-full perspective-distant transform-3d')}>
       <motion.div
         onClick={handleClick}
         animate={controls}
@@ -65,8 +62,8 @@ export function Card({ index, className, store }: Props) {
         >
           <div className="relative w-full" style={{ aspectRatio: '250 / 350' }}>
             <Image
-              src={store.isRevealed(index) ? cardFace : cardPlaceholder}
-              alt={store.isRevealed(index) ? 'Playing card face' : 'Playing card back'}
+              src={revealed ? cardFace : cardPlaceholder}
+              alt={revealed ? 'Playing card face' : 'Playing card back'}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
               priority={false}
@@ -85,4 +82,4 @@ export function Card({ index, className, store }: Props) {
       </motion.div>
     </div>
   );
-}
+};

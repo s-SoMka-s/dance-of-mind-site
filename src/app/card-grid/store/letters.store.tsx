@@ -2,6 +2,8 @@ import { useLocalObservable } from 'mobx-react-lite';
 import { shuffle, splitToLetters } from '@utils';
 import { TIdName } from '@models';
 
+import { QUEST_CONFIG, QUEST_PHRASE } from '@card-grid/config';
+
 const getLetters = (source?: string): TIdName<string>[] => {
   if (!source) {
     return [];
@@ -15,28 +17,12 @@ const getLetters = (source?: string): TIdName<string>[] => {
   }));
 };
 
-const createLocalStore = () => ({
-  letters: [] as TIdName<string>[],
+const createLocalStore = (questId: string, onSolved: (questId: string) => void) => ({
+  letters: getLetters(QUEST_PHRASE),
+  required: new Set(splitToLetters(QUEST_CONFIG)),
   selectedIds: new Set<string>(),
   selectedLetters: new Set<string>(),
-  required: new Set<string>(),
-
-  setPhrase(phrase?: string) {
-    this.letters = getLetters(phrase);
-    this.selectedIds.clear();
-    this.selectedLetters.clear();
-  },
-
-  setExpected(expected?: string) {
-    this.required = new Set(expected ? splitToLetters(expected) : []);
-    this.selectedIds.clear();
-    this.selectedLetters.clear();
-  },
-
-  checkExpected(expected: string) {
-    this.required = new Set(splitToLetters(expected));
-    this.reshuffleIfComplete();
-  },
+  onSolved: onSolved,
 
   isSelected(item: TIdName<string>) {
     return this.selectedIds.has(item.id);
@@ -53,29 +39,34 @@ const createLocalStore = () => ({
       this.selectedLetters.add(name);
     }
 
-    // After any change, check completion and reshuffle if needed
-    this.reshuffleIfComplete();
+    this.checkSolved();
   },
 
-  reshuffleIfComplete() {
-    const isAllRequiredSelected = Object.keys(this.required).every((k) =>
-      this.selectedLetters.has(k)
-    );
+  reshuffle() {
+    this.letters = shuffle(this.letters);
+    this.selectedIds.clear();
+    this.selectedLetters.clear();
+  },
+
+  checkSolved() {
+    const isAllRequiredSelected = this.required.values().every((k) => this.selectedLetters.has(k));
 
     if (!isAllRequiredSelected) {
       return;
     }
 
-    this.letters = shuffle(this.letters);
-    this.selectedIds.clear();
-    this.selectedLetters.clear();
-    // Сообщаем об окончании набора слова
-    //this.onComplete?.();
+    this.onSolved(questId);
   },
 });
 
 export type TLettersStore = ReturnType<typeof createLocalStore>;
 
-export const useLettersStore = () => {
-  return useLocalObservable(() => createLocalStore());
+export const useLettersStore = ({
+  questId,
+  onSolved,
+}: {
+  questId: string;
+  onSolved: (questId: string) => void;
+}) => {
+  return useLocalObservable(() => createLocalStore(questId, onSolved));
 };
